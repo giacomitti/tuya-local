@@ -4,9 +4,11 @@ products:
     name: Vevor SS EU Mode2 7kW
   - id: w7lvyyxyevpwf20e
     name: Vevor SS US 7kW
+  - id: ypdfdnwauasb8rje
+    name: Vevor SS EU Mode2 3.7kW
 primary_entity:
   entity: sensor
-  name: Status
+  translation_key: status
   class: enum
   icon: "mdi:ev-station"
   dps:
@@ -15,21 +17,21 @@ primary_entity:
       name: sensor
       mapping:
         - dps_val: charger_free
-          value: Available
+          value: available
         - dps_val: charger_insert
-          value: Plugged in
+          value: plugged_in
         - dps_val: charger_free_fault
-          value: Fault (unplugged)
+          value: fault_unplugged
         - dps_val: charger_wait
-          value: Waiting
+          value: waiting
         - dps_val: charger_charging
-          value: Charging
+          value: charging
         - dps_val: charger_pause
-          value: Paused
+          value: paused
         - dps_val: charger_end
-          value: Finished
+          value: charged
         - dps_val: charger_fault
-          value: Fault
+          value: fault
     - id: 23
       type: string
       name: system_version
@@ -74,7 +76,8 @@ secondary_entities:
         mapping:
           - scale: 1000
   - entity: sensor
-    class: Phase A power
+    name: Phase A power
+    class: power
     category: diagnostic
     dps:
       - id: 6
@@ -116,6 +119,7 @@ secondary_entities:
       - id: 9
         type: integer
         name: sensor
+        optional: true
         unit: kW
         class: measurement
         mapping:
@@ -185,6 +189,7 @@ secondary_entities:
     dps:
       - id: 16
         type: boolean
+        optional: true
         name: button
   - entity: switch
     icon: "mdi:power"

@@ -76,7 +76,7 @@ class TuyaLocalDevice(object):
                     parent = tinytuya.Device(dev_id, address, local_key)
                     hass.data[DOMAIN][dev_id] = {"tuyadevice": parent}
                 self._api = tinytuya.Device(
-                    dev_id,
+                    dev_cid,
                     cid=dev_cid,
                     parent=parent,
                 )
@@ -99,9 +99,7 @@ class TuyaLocalDevice(object):
         self._api.set_socketRetryLimit(1)
         if self._api.parent:
             # Retries cause problems for other children of the parent device
-            # Currently, we only support polling for child devices
             self._api.parent.set_socketRetryLimit(1)
-            poll_only = True
 
         self._refresh_task = None
         self._protocol_configured = protocol_version
@@ -158,7 +156,8 @@ class TuyaLocalDevice(object):
         self._shutdown_listener = self._hass.bus.async_listen_once(
             EVENT_HOMEASSISTANT_STOP, self.async_stop
         )
-        self._refresh_task = self._hass.async_create_task(self.receive_loop())
+        if not self._refresh_task:
+            self._refresh_task = self._hass.async_create_task(self.receive_loop())
 
     def start(self):
         if self._hass.is_stopping:
@@ -179,6 +178,9 @@ class TuyaLocalDevice(object):
         self._children.clear()
         self._force_dps.clear()
         if self._refresh_task:
+            self._api.set_socketPersistent(False)
+            if self._api.parent:
+                self._api.parent.set_socketPersistent(False)
             await self._refresh_task
         _LOGGER.debug("Monitor loop for %s stopped", self.name)
         self._refresh_task = None
@@ -245,6 +247,9 @@ class TuyaLocalDevice(object):
             _LOGGER.exception(
                 "%s receive loop terminated by exception %s", self.name, t
             )
+            self._api.set_socketPersistent(False)
+            if self._api.parent:
+                self._api.parent.set_socketPersistent(False)
 
     @property
     def should_poll(self):
@@ -252,6 +257,9 @@ class TuyaLocalDevice(object):
 
     def pause(self):
         self._temporary_poll = True
+        self._api.set_socketPersistent(False)
+        if self._api.parent:
+            self._api.parent.set_socketPersistent(False)
 
     def resume(self):
         self._temporary_poll = False
@@ -350,6 +358,9 @@ class TuyaLocalDevice(object):
                     type(t),
                     t,
                 )
+                self._api.set_socketPersistent(False)
+                if self._api.parent:
+                    self._api.parent.set_socketPersistent(False)
                 await asyncio.sleep(5)
 
         # Close the persistent connection when exiting the loop
@@ -374,6 +385,7 @@ class TuyaLocalDevice(object):
             cached_state,
         )
         for match in possible:
+            await asyncio.sleep(0)
             yield match
 
     async def async_inferred_type(self):
@@ -500,7 +512,7 @@ class TuyaLocalDevice(object):
         # Only delay a second if there was recently another command.
         # Otherwise delay 1ms, to keep things simple by reusing the
         # same send mechanism.
-        waittime = 1 if since < 1.1 else 0.001
+        waittime = 1 if since < 1.1 and self.should_poll else 0.001
 
         await asyncio.sleep(waittime)
         await self._send_pending_updates()
@@ -676,3 +688,4 @@ async def async_delete_device(hass: HomeAssistant, config: dict):
     _LOGGER.info("Deleting device: %s", device_id)
     await hass.data[DOMAIN][device_id]["device"].async_stop()
     del hass.data[DOMAIN][device_id]["device"]
+    del hass.data[DOMAIN][device_id]["tuyadevice"]

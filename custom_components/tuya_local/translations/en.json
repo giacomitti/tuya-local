@@ -122,6 +122,13 @@
                     "on": "Full"
                 }
             },
+            "wake": {
+                "name": "Wake",
+                "state": {
+                    "off": "Sleeping",
+                    "on": "Awake"
+                }
+            },
             "casdon_oven_fault": {
                 "state_attributes": {
                     "fault_message": {
@@ -137,6 +144,14 @@
                         }
                     }
                 }
+            }
+        },
+        "button": {
+            "factory_reset": {
+                "name": "Factory reset"
+            },
+            "filter_reset": {
+                "name": "Filter reset"
             }
         },
         "climate": {
@@ -215,7 +230,10 @@
                             "smart_cool": "Smart cool",
                             "quick_cool": "Quick cool",
                             "quiet_cool": "Quiet cool",
-                            "auto": "Auto"
+                            "auto": "Auto",
+                            "smart": "Smart",
+                            "quick": "Quick",
+                            "quiet": "Quiet"
                         }
                     }
                 }
@@ -364,6 +382,42 @@
             }
         },
         "select": {
+            "initial_state": {
+                "name": "Initial state",
+                "state": {
+                    "off": "Off",
+                    "on": "On",
+                    "memory": "Memory"
+                }
+            },
+            "language": {
+                "name": "Language",
+                "state": {
+                    "chinese": "中文",
+                    "chinese_traditional": "中文(繁體)",
+                    "english": "English",
+                    "french": "Français",
+                    "german": "Deutsch",
+                    "italian": "Italiano",
+                    "japanese": "日本語",
+                    "korean": "한국어",
+                    "latin": "Lingua Latina",
+                    "portuguese": "Português",
+                    "russian": "Русский",
+                    "spanish": "Español",
+                    "turkish": "Türkçe"
+                }
+            },
+            "mopping": {
+                "name": "Mopping",
+                "state": {
+                    "off": "Off",
+                    "auto": "Auto",
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High"
+                }
+            },
             "recipe": {
                 "name": "Recipe",
                 "state": {
@@ -381,6 +435,7 @@
                     "onion_rings": "Onion Rings",
                     "bacon": "Bacon",
                     "cake": "Cake",
+                    "bread": "Bread",
                     "toast": "Toast",
                     "custom": "Custom",
                     "cloud_recipe": "Cloud Recipe",
@@ -393,6 +448,7 @@
                 "name": "Timer",
                 "state": {
                     "cancel": "Cancel",
+                    "10m": "10 minutes",
                     "30m": "30 minutes",
                     "1h": "1 hour",
                     "1h30m": "1 hour 30 minutes",
@@ -477,6 +533,75 @@
             }
         },
         "sensor": {
+            "status": {
+                "name": "Status",
+                "state": {
+                    "available": "Available",
+                    "plugged_in": "Plugged in",
+                    "fault_unplugged": "Fault (unplugged)",
+                    "charging": "Charging",
+                    "waiting": "Waiting",
+                    "charged": "Charged",
+                    "fault": "Fault",
+                    "paused": "Paused",
+                    "waiting_for_authorization": "Waiting for authorization",
+                    "standby": "Standby",
+                    "heating": "Heating",
+                    "cooling": "Cooling",
+                    "keeping_warm": "Keeping warm",
+                    "no_water": "No water",
+                    "boiling": "Boiling",
+                    "reserve_only": "Reserve only",
+                    "unknown": "Unknown",
+                    "idle": "Idle",
+                    "auto": "Auto",
+                    "manual": "Manual",
+                    "rain_delay": "Rain delay",
+                    "off": "Off",
+                    "cooking": "Cooking",
+                    "done": "Done",
+                    "door_open": "Door open",
+                    "setting": "Setting",
+                    "pre_heating": "Pre-heating",
+                    "scheduled": "Scheduled",
+                    "at_temperature": "At temperature",
+                    "done_stage_1": "Done stage 1",
+                    "done_stage_2": "Done stage 2",
+                    "done_stage_3": "Done stage 3",
+                    "done_stage_4": "Done stage 4",
+                    "done_stage_5": "Done stage 5",
+                    "done_stage_6": "Done stage 6",
+                    "done_stage_7": "Done stage 7",
+                    "done_stage_8": "Done stage 8",
+                    "done_stage_9": "Done stage 9",
+                    "done_stage_10": "Done stage 10",
+                    "no_food": "No food",
+                    "jammed": "Jammed",
+                    "blocked": "Blocked",
+                    "feeding": "Feeding",
+                    "feeding_complete": "Feeding complete",
+                    "caking": "Caking",
+                    "cleaning": "Cleaning",
+                    "sleep": "Sleep",
+                    "sterilizing": "Sterilizing",
+                    "deodorizing": "Deodorizing",
+                    "occupied": "Occupied",
+                    "normal": "Normal",
+                    "low": "Low",
+                    "high": "High",
+                    "unwashed": "Unwashed",
+                    "pre_rinsing": "Pre-rinsing",
+                    "washing": "Washing",
+                    "rinsing": "Rinsing",
+                    "drying": "Drying",
+                    "air_purging": "Air purging",
+                    "anti_freeze": "Anti-freeze",
+                    "close": "Close",
+                    "monitor": "Monitor",
+                    "working": "Working",
+                    "warning": "Warning"
+                }
+            },
             "time_remaining": {
                 "name": "Time remaining"
             },
@@ -504,6 +629,9 @@
             },
             "keytone": {
                 "name": "Keytone"
+            },
+            "sleep": {
+                "name": "Sleep"
             },
             "uv_sterilization": {
                 "name": "UV sterilization"

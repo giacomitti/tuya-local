@@ -117,6 +117,7 @@ secondary_entities:
           - dps_val: "24"
             value: "24h"
   - entity: sensor
+    deprecated: humidifier.current_humidity
     class: humidity
     dps:
       - id: 104
@@ -133,17 +134,12 @@ secondary_entities:
         unit: C
         class: measurement
   - entity: switch
-    name: Sleep
+    translation_key: sleep
     category: config
     dps:
       - id: 102
         type: boolean
         name: switch
-        mapping:
-          - dps_val: false
-            icon: "mdi:sleep-off"
-          - dps_val: true
-            icon: "mdi:sleep"
   - entity: lock
     translation_key: child_lock
     category: config
